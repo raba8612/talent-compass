@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="四個面向的職涯探索測驗：興趣、個性、天賦、價值觀。約 12 分鐘，結果只留在你的瀏覽器。">
+<title>天賦羅盤</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style id="app-css">
+/* Layout: one reading column (48rem). The quiz shows one card at a time; the report is a long column opened by the archetype and the Holland hexagon. */
+:root{
+  --paper:#F4F5F9;--surface:#FFFFFF;--sunk:#E8EBF3;--line:#D6DAE7;
+  --ink:#192140;--ink-2:#454F70;--ink-3:#6E7692;
+  --needle:#C63F2A;--needle-soft:#F7E0DA;
+  --navy:#26357A;--navy-soft:#E1E5F5;
+  --t-R:#8A6814;--t-I:#2B68AE;--t-A:#A13A8B;--t-S:#1F7F63;--t-E:#C4561F;--t-C:#5357A6;
+  --f-display:"LXGW WenKai TC","Kaiti TC","BiauKai","DFKai-SB","STKaiti",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+  --f-num:"Space Grotesk","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0F1322;--surface:#171C30;--sunk:#222842;--line:#2F3655;
+  --ink:#E9ECF6;--ink-2:#B6BCD2;--ink-3:#8A91AC;
+  --needle:#FF7A63;--needle-soft:#3C2326;
+  --navy:#AAB8FF;--navy-soft:#262F57;
+  --t-R:#D9B35E;--t-I:#77AEF2;--t-A:#E087D0;--t-S:#62CDA5;--t-E:#F39463;--t-C:#A8ACF2;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0F1322;--surface:#171C30;--sunk:#222842;--line:#2F3655;
+  --ink:#E9ECF6;--ink-2:#B6BCD2;--ink-3:#8A91AC;
+  --needle:#FF7A63;--needle-soft:#3C2326;
+  --navy:#AAB8FF;--navy-soft:#262F57;
+  --t-R:#D9B35E;--t-I:#77AEF2;--t-A:#E087D0;--t-S:#62CDA5;--t-E:#F39463;--t-C:#A8ACF2;
+  color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.app{max-width:48rem;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 80px}
+h1,h2,h3,h4,p{margin:0}
+.display{font-family:var(--f-display);font-weight:700;letter-spacing:.02em;text-wrap:balance}
+.eyebrow{font-size:13px;letter-spacing:.12em;color:var(--ink-3);font-weight:500}
+.lede{font-size:18px;color:var(--ink-2);max-width:36em}
+.note{font-size:13.5px;color:var(--ink-3);max-width:44em}
+.prose-p{color:var(--ink-2);max-width:40em}
+button{font:inherit;color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;cursor:pointer;font-weight:500;transition:transform .12s,background-color .15s}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.ghost{border-color:var(--line);color:var(--ink);background:var(--surface)}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.link{background:none;border:0;padding:8px 2px;color:var(--ink-2);cursor:pointer;font-size:15px}
+.link:hover{color:var(--ink)}
+:focus-visible{outline:2.5px solid var(--navy);outline-offset:3px;border-radius:8px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:20px;font-weight:700;color:var(--ink);background:none;border:0;padding:0;cursor:pointer}
+.mark{width:30px;height:30px;color:var(--ink);flex:none}
+.mark .needle{transform-box:view-box;transform-origin:16px 16px;transition:transform 1s cubic-bezier(.3,1.5,.5,1)}
+.tb-progress{font-family:var(--f-num);font-size:14px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.pbar{height:3px;background:var(--sunk);border-radius:99px;overflow:hidden;margin-bottom:26px}
+.pbar span{display:block;height:100%;width:0;background:var(--needle);transition:width .3s}
+
+/* intro */
+.intro{display:grid;gap:26px;padding-top:22px}
+.intro h1{font-size:clamp(46px,10vw,68px);line-height:1.1}
+.parts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.parts li{display:flex;gap:14px;padding:16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);min-width:0}
+.pn{font-family:var(--f-num);font-weight:700;font-size:15px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--navy-soft);color:var(--navy);flex:none}
+.parts b{display:block;font-size:17px}
+.parts div span{display:block;color:var(--ink-2);font-size:15px}
+.parts small{display:block;color:var(--ink-3);font-size:13px}
+.toggle{display:flex;gap:12px;align-items:flex-start;cursor:pointer;max-width:38em}
+.toggle input{width:20px;height:20px;margin:4px 0 0;accent-color:var(--navy);flex:none}
+.toggle small{display:block;color:var(--ink-3);font-size:13.5px}
+.preview{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:20px;align-items:center;padding:20px 22px;border-radius:var(--radius);background:var(--sunk)}
+.getlist{margin:8px 0 0;padding-left:1.2em;color:var(--ink-2)}
+.mini-hex{margin:0;text-align:center}
+.mini-hex svg{width:100%;height:auto;display:block}
+.mini-hex figcaption{font-size:12px;color:var(--ink-3)}
+@media (max-width:560px){.parts{grid-template-columns:minmax(0,1fr)}.preview{grid-template-columns:minmax(0,1fr)}.mini-hex{max-width:200px;margin-inline:auto}}
+
+/* quiz */
+.sec-intro{display:grid;gap:18px;padding-top:28px;max-width:36em}
+.sec-intro h2{font-size:clamp(38px,8vw,52px);line-height:1.15}
+.sec-intro h2 span{display:block;font-family:var(--f-body);font-weight:400;font-size:18px;color:var(--ink-2);letter-spacing:0;margin-top:8px}
+.sec-intro .body{font-size:17px;color:var(--ink-2)}
+.qwrap{display:grid;gap:14px}
+.qmeta{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px;color:var(--ink-3)}
+.sec-tag{font-weight:500;color:var(--ink-2)}
+.count{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,5vw,36px);display:grid;gap:14px}
+.qprompt{font-size:14px;color:var(--ink-3)}
+.qtext{font-family:var(--f-display);font-size:clamp(25px,5.6vw,33px);line-height:1.4;min-height:2.8em;text-wrap:balance}
+.opts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:6px}
+.opt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 6px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;transition:border-color .12s,background-color .12s}
+.opt .k{font-family:var(--f-num);font-weight:700;font-size:18px;color:var(--ink-3)}
+.opt .l{font-size:14px;color:var(--ink-2);line-height:1.35;text-align:center}
+.opt:hover{border-color:var(--ink-3)}
+.opt.on{border-color:var(--navy);background:var(--navy-soft)}
+.opt.on .k,.opt.on .l{color:var(--navy)}
+.qnav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;min-height:46px}
+.hint{font-size:13px;color:var(--ink-3)}
+.notice{font-size:14.5px;color:var(--needle)}
+@media (max-width:620px){.opts{grid-template-columns:minmax(0,1fr)}.opt{flex-direction:row;justify-content:flex-start;gap:14px;padding:11px 16px}.opt .l{text-align:left;font-size:16px}.hint{display:none}}
+.vgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.vcard{position:relative;text-align:left;display:grid;gap:2px;padding:14px 16px 14px 58px;border-radius:12px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;min-width:0}
+.vcard b{font-size:17px}
+.vcard .vd{font-size:14px;color:var(--ink-2);line-height:1.55}
+.vr{position:absolute;left:14px;top:14px;width:30px;height:30px;border-radius:50%;border:1.5px dashed var(--ink-3);display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:15px}
+.vcard.on{border-color:var(--navy);background:var(--navy-soft)}
+.vcard.on .vr{background:var(--navy);color:var(--surface);border-color:var(--navy);border-style:solid}
+@media (max-width:560px){.vgrid{grid-template-columns:minmax(0,1fr)}}
+
+/* report */
+.report{display:grid;gap:54px;padding-top:18px}
+.r-hero{display:grid;gap:16px}
+.arche{font-size:clamp(38px,8.5vw,58px);line-height:1.15}
+.arche::after{content:"";display:block;width:64px;height:4px;border-radius:2px;background:var(--needle);margin-top:16px}
+.keyfacts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:6px 0 0}
+.keyfacts div{background:var(--surface);padding:14px 16px;min-width:0}
+.keyfacts dt{font-size:12.5px;color:var(--ink-3);letter-spacing:.06em}
+.keyfacts dd{margin:4px 0 0;font-weight:700;font-size:16px;line-height:1.45}
+.keyfacts dd.code{display:flex;gap:6px;font-family:var(--f-num);font-size:28px;line-height:1.1}
+.code span,.mini-code span{color:var(--tc)}
+@media (max-width:640px){.keyfacts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.r-sec{display:grid;gap:18px}
+.sec-head{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:22px}
+.sec-head h2{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.2vw,32px);line-height:1.3;text-wrap:balance}
+.sub{font-size:17px;margin-top:6px}
+.prose{display:grid;gap:12px;max-width:40em;color:var(--ink-2)}
+.prose b{color:var(--ink)}
+.interest{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:center}
+.hex{margin:0}
+.hex svg{width:100%;height:auto;display:block;max-width:420px;margin-inline:auto}
+.hx-ring{fill:none;stroke:var(--line);stroke-width:1}
+.hx-axis{stroke:var(--line);stroke-width:1}
+.hx-shape{fill:var(--needle);fill-opacity:.14;stroke:var(--needle);stroke-width:2;stroke-linejoin:round}
+.hx-l{font-family:var(--f-body);font-size:13px;font-weight:500;fill:var(--ink-2)}
+.hx-letter{font-family:var(--f-num);font-weight:700;font-size:15px}
+.hx-v{font-family:var(--f-num);font-weight:700;font-size:13px;fill:var(--ink)}
+svg.mini .hx-letter{font-size:28px}
+@media (max-width:640px){.interest{grid-template-columns:minmax(0,1fr)}}
+.bars{display:grid;gap:10px}
+.bar-row{display:grid;grid-template-columns:7.2em minmax(0,1fr) 2.6em;gap:12px;align-items:center;font-size:15px}
+.bar-row .bl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-row .bl b{font-family:var(--f-num);color:var(--tc,var(--navy));margin-right:4px}
+.bv{font-family:var(--f-num);font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.track{position:relative;display:block;height:10px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--tc,var(--navy))}
+.t-grid{display:grid;gap:12px}
+.tcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:10px}
+.tcard header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.t-no{font-family:var(--f-num);font-weight:700;color:var(--needle);font-size:15px}
+.tcard h3{font-family:var(--f-display);font-size:26px;font-weight:700}
+.tcard .score{font-family:var(--f-num);font-weight:700;color:var(--ink-3);font-size:14px;margin-left:auto}
+.tcard .one{font-size:17px}
+.tcard dl{display:grid;grid-template-columns:5em minmax(0,1fr);gap:6px 12px;margin:0;font-size:15px}
+.tcard dt{color:var(--ink-3)}
+.tcard dd{margin:0;color:var(--ink-2)}
+.evid{background:var(--needle-soft);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--ink)}
+.evid .who{display:block;font-size:12.5px;color:var(--needle);font-weight:700;letter-spacing:.06em;margin-bottom:2px}
+.t-support{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ts{display:flex;gap:12px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;min-width:0}
+.ts .t-no{color:var(--navy)}
+.ts b{display:block;font-size:17px}
+.ts span.tx{display:block;color:var(--ink-2);font-size:14.5px}
+@media (max-width:560px){.t-support{grid-template-columns:minmax(0,1fr)}}
+.callout{border:1.5px dashed var(--line);border-radius:var(--radius);padding:16px 18px;display:grid;gap:8px;color:var(--ink-2)}
+.callout b{color:var(--ink)}
+.callout ul{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.b5{display:grid;gap:20px}
+.b5-row{display:grid;gap:6px}
+.b5-top{display:flex;align-items:baseline;gap:10px}
+.b5-top b{font-size:17px}
+.b5-top .bv{margin-left:auto}
+.band{font-size:12.5px;padding:1px 10px;border-radius:99px;background:var(--sunk);color:var(--ink-2)}
+.band.hi{background:var(--navy-soft);color:var(--navy)}
+.band.lo{background:transparent;border:1px solid var(--line)}
+.scale .mid{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--surface)}
+.b5-row p{color:var(--ink-2);font-size:15px}
+.vlist{list-style:none;margin:0;padding:0;display:grid}
+.vlist li{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--line)}
+.vlist .vn{font-family:var(--f-num);font-weight:700;font-size:22px;line-height:1.3;color:var(--ink-3)}
+.vlist li:nth-child(-n+2) .vn{color:var(--needle)}
+.vlist b{font-size:17px}
+.vlist p{color:var(--ink-2);font-size:15px}
+.vlist .ask{color:var(--ink);margin-top:4px}
+.cgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ccard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:grid;gap:12px;align-content:start;min-width:0}
+.c-head{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:baseline}
+.c-rank{font-family:var(--f-num);font-weight:700;color:var(--ink-3);font-size:15px}
+.c-head h3{font-size:18px;line-height:1.4}
+.c-score{font-family:var(--f-num);font-weight:700;font-size:26px;color:var(--needle);line-height:1;font-variant-numeric:tabular-nums}
+.c-score small{font-size:14px;margin-left:1px}
+.c-desc{color:var(--ink-2);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:13px;padding:3px 10px;border-radius:99px;background:var(--navy-soft);color:var(--navy);line-height:1.5}
+.c-meta{display:grid;gap:8px;margin:0;font-size:14.5px}
+.c-meta div{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:10px}
+.c-meta dt{color:var(--ink-3)}
+.c-meta dd{margin:0;color:var(--ink-2)}
+.c-meta .mine dd{color:var(--ink)}
+.mini-code{font-family:var(--f-num);font-weight:700;letter-spacing:.08em}
+.c-split{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;font-size:12.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:10px}
+.c-split .track{height:6px;margin-top:4px}
+.more{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px}
+.more li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;min-width:0}
+.more .s{font-family:var(--f-num);font-weight:700;color:var(--ink-3);font-variant-numeric:tabular-nums}
+@media (max-width:640px){.cgrid,.more{grid-template-columns:minmax(0,1fr)}}
+.plan{list-style:none;margin:0;padding:0;display:grid}
+.plan>li{display:grid;grid-template-columns:8em minmax(0,1fr);gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+.plan .ph{font-family:var(--f-num);font-weight:700;color:var(--needle);font-size:14px}
+.plan .ph b{display:block;font-family:var(--f-display);font-size:23px;color:var(--ink);font-weight:700;line-height:1.35}
+.plan ul{margin:0;padding-left:1.1em;display:grid;gap:6px;color:var(--ink-2)}
+@media (max-width:560px){.plan>li{grid-template-columns:minmax(0,1fr);gap:8px}}
+.letter{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(20px,5vw,32px);display:grid;gap:12px;font-size:16.5px}
+.letter:empty{display:none}
+.letter h4{font-family:var(--f-display);font-size:22px;margin-top:6px}
+.letter p,.letter li{color:var(--ink-2)}
+.letter strong{color:var(--ink)}
+.letter ul,.letter ol{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.thinking{color:var(--ink-3);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+.about{margin:0;padding-left:1.2em;display:grid;gap:8px;color:var(--ink-2);font-size:15px;max-width:44em}
+.about b{color:var(--ink)}
+.r-actions{display:grid;gap:14px;border-top:1px solid var(--line);padding-top:22px}
+.save-status{font-size:15px;color:var(--ink-2)}
+.save-status[data-s="saved"]{color:var(--t-S)}
+.save-status[data-s="error"],.save-status[data-s="denied"]{color:var(--needle)}
+#copy-fallback{width:100%;min-height:180px;font:14px/1.6 var(--f-body);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+@media print{.no-export,.topbar,.pbar{display:none!important}.report{gap:28px}.ccard,.tcard,.callout,.plan>li{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+
+<div class="app">
+  <header class="topbar">
+    <button class="brand" data-act="home" aria-label="回到天賦羅盤首頁">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="1.6"/><g class="needle"><path d="M16 4.5 L19.6 16 L12.4 16 Z" fill="var(--needle)"/><path d="M16 27.5 L12.4 16 L19.6 16 Z" fill="currentColor" opacity=".5"/></g><circle cx="16" cy="16" r="1.9" fill="var(--paper)" stroke="currentColor" stroke-width="1"/></svg>
+      <span>天賦羅盤</span>
+    </button>
+    <span class="tb-progress" id="tb-progress"></span>
+  </header>
+  <div class="pbar" id="pbar" hidden><span id="pbar-fill"></span></div>
+  <main id="view"></main>
+  <noscript><p>這份測驗需要開啟 JavaScript 才能使用。</p></noscript>
+</div>
+
+<script>
+(function () {
+'use strict';
+document.documentElement.lang = 'zh-Hant';
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var FONT_URL = 'https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap';
+var KEY = 'talent-compass:v1';
+
+/* ================= content ================= */
+var HEX = ['R', 'I', 'A', 'S', 'E', 'C'];
+var RIASEC = {
+  R: { name: '實用型', desc: '喜歡動手、操作工具與機器，在現場或戶外做出看得到的成果。', env: '技術現場、工廠、戶外、餐飲廚房' },
+  I: { name: '研究型', desc: '喜歡觀察、分析、追根究柢，解決需要動腦的問題。', env: '研究、數據、技術、實驗室' },
+  A: { name: '藝術型', desc: '喜歡創作與表達，在規則少、能發揮想像的地方最自在。', env: '設計、內容、遊戲、娛樂' },
+  S: { name: '社會型', desc: '喜歡幫助、教導與照顧別人，從人的成長得到滿足。', env: '教育、諮詢、服務、人資' },
+  E: { name: '企業型', desc: '喜歡說服、帶領與做決定，追求目標和影響力。', env: '業務、管理、行銷、創業' },
+  C: { name: '事務型', desc: '喜歡有條理的資料和流程，規則清楚、做事精確。', env: '行政、財會、資料管理、品保' }
+};
+var RI_ITEMS = {
+  R: ['組裝廚房櫥櫃', '鋪地磚或貼磁磚', '修理洗衣機、冷氣等家電', '組裝電子零件', '開貨車把包裹送到公司和住家', '出貨前檢驗零件的品質', '架設並操作機器來生產產品', '撲滅森林火災'],
+  I: ['研發新藥', '研究減少水污染的方法', '做化學實驗', '研究行星的運行', '調查火災發生的原因', '開發更準確的天氣預測方法', '在生物實驗室工作', '發明可以取代糖的新甜味劑'],
+  A: ['寫小說或劇本', '演奏樂器', '作曲或編曲', '畫畫', '為電影製作特效', '為舞台劇設計與繪製佈景', '上台表演舞蹈', '剪輯電影'],
+  S: ['教一個人做運動訓練', '幫助有個人或情緒困擾的人', '給別人職涯方向的建議', '為受傷的人做復健治療', '在非營利組織當志工', '教小朋友運動', '協助帶領團體諮商', '教高中的課'],
+  E: ['買賣股票和債券', '管理一家零售店', '管理大公司裡的一個部門', '自己創業開公司', '談判商業合約', '在法庭上代表客戶打官司', '為新的服飾系列做行銷', '在百貨公司銷售商品'],
+  C: ['用電腦軟體製作試算表', '校對紀錄或表單', '在公司的電腦網路上安裝軟體', '記錄出貨與收貨', '計算員工的薪資', '用手持裝置盤點庫存', '記錄房租收款', '為公司分類與分發郵件']
+};
+var B5 = [
+  { t: '我是聚會裡的開心果。', k: 'E', rev: false },
+  { t: '我能體會別人的感受。', k: 'A', rev: false },
+  { t: '我會馬上把該做的雜事做完。', k: 'C', rev: false },
+  { t: '我的情緒常常起伏很大。', k: 'N', rev: false },
+  { t: '我的詞彙量很豐富。', k: 'O', rev: false },
+  { t: '我話不多。', k: 'E', rev: true },
+  { t: '我對別人的問題不太感興趣。', k: 'A', rev: true },
+  { t: '我常忘記把東西放回原位。', k: 'C', rev: true },
+  { t: '我大部分時間都很放鬆。', k: 'N', rev: true },
+  { t: '我很難理解抽象的概念。', k: 'O', rev: true },
+  { t: '在聚會上，我會和很多不同的人聊天。', k: 'E', rev: false },
+  { t: '我能感受到別人的情緒。', k: 'A', rev: false },
+  { t: '我喜歡井然有序。', k: 'C', rev: false },
+  { t: '我很容易心煩。', k: 'N', rev: false },
+  { t: '我的想像力很豐富。', k: 'O', rev: false },
+  { t: '我習慣待在不顯眼的地方。', k: 'E', rev: true },
+  { t: '我對別人其實不太感興趣。', k: 'A', rev: true },
+  { t: '我常把事情弄得一團亂。', k: 'C', rev: true },
+  { t: '我很少感到憂鬱。', k: 'N', rev: true },
+  { t: '我的想像力不太好。', k: 'O', rev: true }
+];
+var B5KEYS = ['E', 'A', 'C', 'ES', 'O'];
+var B5INFO = {
+  E: { name: '外向性', hi: '你從人群中得到能量，喜歡熱鬧和對外溝通，適合需要大量接觸人的角色。', mid: '你在人群和獨處之間都自在，可以依情境切換。', lo: '你在安靜中充電，偏好一對一或獨立作業，適合需要專注的角色。' },
+  A: { name: '親和性', hi: '你體貼、願意合作、重視和諧。留意別為了避免衝突而一直讓步。', mid: '你願意合作，也能在必要時堅持立場。', lo: '你直接、敢挑戰，不太說場面話，適合需要談判或批判思考的角色。' },
+  C: { name: '盡責性', hi: '你有計畫、守紀律，交辦的事會穩穩完成。', mid: '重要的事你會做好，但不會被每個細節綁住。', lo: '你偏好彈性和臨場發揮，細節與流程容易漏。可以用清單、工具或搭檔補上。' },
+  ES: { name: '情緒穩定性', hi: '你在壓力下相對平穩，適合高壓、變動大的環境。', mid: '多數時候平穩，大壓力時也會起伏。有自己的恢復方式會很有幫助。', lo: '你的感受敏銳，壓力容易累積。節奏可預期的環境和固定的恢復習慣會很有幫助。' },
+  O: { name: '開放性', hi: '你喜歡新點子、抽象思考和想像，適合創意與探索型的工作。', mid: '你願意接受新想法，也重視實際可行。', lo: '你務實，偏好具體、熟悉的方法，適合重視穩定執行的工作。' }
+};
+var T_ORDER = ['insight', 'people', 'ideate', 'maker', 'taste', 'orchestrate', 'influence', 'analysis', 'adapt', 'order'];
+var TALENTS = {
+  insight: { name: '洞察', noun: '體驗觀察家', adj: '懂人心的', lv: 2,
+    one: '你看得到使用者、觀眾和客人的感受。',
+    use: '做任何東西之前，先問「誰會用、他會在哪裡卡住」。',
+    watch: '容易把自己的感受當成所有人的感受，記得用訪談或數據驗證。',
+    grow: '學使用者訪談與可用性測試，讓直覺有方法可以驗證',
+    items: ['用 App、玩遊戲或看影片時，我常注意到「這裡會讓人卡住、覺得煩」的地方。', '別人還沒說出口，我常能猜到對方真正在意的是什麼。', '做東西給別人用之前，我會先想像對方第一次看到的反應。'] },
+  people: { name: '識人', noun: '伯樂', adj: '會看人的', lv: 2,
+    one: '你看得出每個人的長處，知道誰該放在哪裡。',
+    use: '分工時先看人再派事，把對的人放到對的位置。',
+    watch: '別只憑第一印象替一個人定型，給人重新被看見的機會。',
+    grow: '學基礎的人才評估與回饋技巧，讓你的識人變成說得出理由的判斷',
+    items: ['跟一個人相處不久，我就大概知道他擅長什麼、適合做什麼。', '團隊分工時，我常是那個建議「誰去做哪件事」的人。', '我不會用同一套方式對待每個人，會依對方的個性調整。'] },
+  ideate: { name: '構想', noun: '點子王', adj: '點子多的', lv: 2,
+    one: '你很會想點子，能把不相干的東西連起來。',
+    use: '在企劃、提案、活動和玩法設計上發揮，先求多再求好。',
+    watch: '點子多、收尾少。替每個點子設好「做到哪裡算完成」。',
+    grow: '練習把點子寫成一頁提案：要解決的問題、點子、怎麼驗證',
+    items: ['我腦中常冒出新點子，多到做不完。', '我常把看似無關的東西連在一起，想出新的玩法或做法。', '遇到問題時，我比較想試新方法，而不是照舊做。'] },
+  maker: { name: '實作', noun: '造物者', adj: '動手做的', lv: 2,
+    one: '你偏好先做出來再說，邊做邊學。',
+    use: '用原型說服別人：與其討論一小時，不如先做一個能點的版本。',
+    watch: '跳過規劃容易重工，動手前花十分鐘寫下目標和限制。',
+    grow: '補一點程式或工具基礎，讓你能修改、維護自己做出來的東西',
+    items: ['有了想法，我比較想直接做出一個版本，而不是一直討論。', '學新工具時，我喜歡邊做邊學，不想先把說明讀完。', '看到東西從無到有、變成真的能用，會讓我很有成就感。'] },
+  taste: { name: '品味', noun: '品味把關者', adj: '有品味的', lv: 2,
+    one: '你對「好不好」有清楚的標準，一眼看出哪裡不對。',
+    use: '擔任審稿、驗收和體驗把關的角色，讓成品從「能用」變成「好用」。',
+    watch: '標準太高會拖慢進度，分清楚「必須修」和「可以更好」。',
+    grow: '建立自己的作品參考庫，練習把「哪裡怪」說成具體的修改建議',
+    items: ['看到成品時，我很快就知道「哪裡怪怪的」，即使一時說不出怎麼改。', '東西「能用」對我來說不夠，我會想把它弄到好用又好看。', '朋友常找我幫忙看文案、設計或作品，給他們意見。'] },
+  orchestrate: { name: '統籌', noun: '現場指揮官', adj: '穩住場面的', lv: 2,
+    one: '你能在混亂中排出順序，讓一群人動起來。',
+    use: '活動、專案、檔期和現場營運，越忙越能發揮。',
+    watch: '什麼都自己扛會累垮，把流程寫下來交給別人。',
+    grow: '學專案管理的基本工具：時程表、分工表、風險清單',
+    items: ['活動或專案快要亂掉時，我會自然跳出來排順序、分配工作。', '在很忙的現場，我能同時盯好幾件事而不慌。', '我喜歡把一群人和一堆資源組織起來，讓事情順利發生。'] },
+  influence: { name: '影響', noun: '推動者', adj: '有說服力的', lv: 1,
+    one: '你能讓別人願意跟你一起行動。',
+    use: '提案、主持、業務和推動改變，都用得到這股力量。',
+    watch: '說服要建立在事實上，承諾別超過自己能交付的。',
+    grow: '練簡報與談判，把說服建立在數字和案例上',
+    items: ['我能把一件事講到別人願意跟我一起做。', '在人前主持或帶氣氛，我不太怯場，甚至覺得有趣。', '遇到不合理的做法，我會主動找人溝通、提出改善方式。'] },
+  analysis: { name: '分析', noun: '解謎者', adj: '講證據的', lv: 1,
+    one: '你想知道事情的真正原因，習慣看證據。',
+    use: '數據、研究、問題排查和覆盤，讓判斷有根據。',
+    watch: '資料永遠不會完整，先設定「看到什麼就做決定」的門檻。',
+    grow: '學試算表進階功能與基礎 SQL，讓你的好奇心有工具可用',
+    items: ['事情出錯時，我會想找出真正的原因，而不是只處理表面。', '看到數字或圖表，我會好奇它背後代表什麼。', '做重要決定前，我會想先看資料或證據。'] },
+  adapt: { name: '適應', noun: '探險家', adj: '到哪都能上手的', lv: 2,
+    one: '你在陌生環境很快上手，計畫變了也能調整。',
+    use: '新事業、新團隊、海外和危機處理，是你比別人更快進入狀況的地方。',
+    watch: '換環境太容易，經歷可能看起來很跳。替每一段說清楚學到什麼、帶走什麼。',
+    grow: '每換一個環境，就寫下學到什麼、帶走什麼，把適應力變成看得見的成長',
+    items: ['換到全新的環境（城市、工作、團隊），我通常很快就能上手。', '計畫臨時被打亂，我能很快調整，不會一直卡在情緒裡。', '我喜歡嘗試沒做過的工作，就算一開始不熟。'] },
+  order: { name: '條理', noun: '守門人', adj: '有條理的', lv: 0,
+    one: '你讓事情穩定、有規則、不出錯。',
+    use: '流程、行政、品保和財務，靠你讓團隊少犯錯。',
+    watch: '太依賴流程會在變動時不自在，保留一點彈性。',
+    grow: '把常做的事寫成清單或 SOP，讓穩定變成團隊也能用的資產',
+    items: ['我習慣把東西整理好，照固定的流程做事。', '重複性高的工作，我也能長時間穩定地做好。', '細節我很少漏掉，例如存檔、回覆訊息、截止日。'] }
+};
+var VKEYS = ['ach', 'ind', 'rec', 'rel', 'sup', 'con'];
+var VALUES = {
+  ach: { name: '成就感', desc: '能發揮能力，看得到自己做出來的成果。', ask: '這個職位做得好，三個月後會看到什麼成果？' },
+  ind: { name: '自主', desc: '可以自己決定怎麼做，有嘗試新想法的空間。', ask: '新人提出不同做法時，團隊通常怎麼處理？' },
+  rec: { name: '被認可', desc: '表現會被看見，有升遷或帶人的機會。', ask: '之前做這個職位的人，後來往哪裡發展？' },
+  rel: { name: '夥伴關係', desc: '同事好相處，做的事對別人有幫助，不違背自己的原則。', ask: '團隊最近一次意見不合，是怎麼解決的？' },
+  sup: { name: '制度與支持', desc: '主管願意支持，公司制度公平，做事有依據。', ask: '主管和新人多久會一對一討論一次？' },
+  con: { name: '條件與穩定', desc: '薪資福利好、工作穩定，內容多樣不無聊。', ask: '薪資結構和加班狀況大概是怎樣？' }
+};
+var CAREERS = [
+  { id: 'liveops', name: '遊戲營運／活動企劃', code: 'EAC', talents: ['insight', 'orchestrate', 'analysis'], values: ['ach', 'ind'],
+    desc: '規劃遊戲內的活動與檔期，看數據調整，讓玩家每天都想回來。', kw: '遊戲營運、遊戲活動企劃、Live Ops',
+    first: '挑一款你正在玩的遊戲，寫一份一個月的活動企劃，附上要追的 3 個數據指標。' },
+  { id: 'gamedesign', name: '遊戲企劃（系統／關卡）', code: 'AIE', talents: ['ideate', 'insight', 'taste'], values: ['ach', 'ind'],
+    desc: '設計玩法、數值與關卡，把「好玩」拆成可以執行的規則。', kw: '遊戲企劃、系統企劃、關卡企劃',
+    first: '把一款你喜歡的遊戲拆成一份系統企劃書：核心循環、成長曲線、卡關點。' },
+  { id: 'event', name: '活動企劃／品牌活動', code: 'EAS', talents: ['orchestrate', 'ideate', 'influence'], values: ['ach', 'rel'],
+    desc: '從點子到現場，把一群人、預算和流程組織成一場活動。', kw: '活動企劃、品牌活動、公關活動',
+    first: '把一次你辦過的活動，整理成「目標、流程、人力、結果」的一頁案例。' },
+  { id: 'marketing', name: '行銷企劃', code: 'EAC', talents: ['insight', 'ideate', 'analysis'], values: ['ach', 'ind'],
+    desc: '找到目標族群的洞察，規劃檔期、內容與投放，再看成效調整。', kw: '行銷企劃、品牌行銷、整合行銷',
+    first: '替一個你喜歡的品牌寫一頁提案：洞察、主訊息、通路、要看的數字。' },
+  { id: 'content', name: '內容／短影音企劃', code: 'AES', talents: ['ideate', 'taste', 'insight'], values: ['ind', 'ach'],
+    desc: '企劃與製作貼文、短影音，讓內容被看完、被分享。', kw: '內容企劃、短影音企劃、社群小編',
+    first: '每週產出 1 支短影音或 1 篇圖文，連續 8 週，記錄每一則的觀看與互動。' },
+  { id: 'community', name: '社群經營／玩家社群', code: 'SEA', talents: ['insight', 'influence', 'people'], values: ['rel', 'ach'],
+    desc: '經營粉專、Discord 或玩家社群，帶動討論、處理客訴與危機。', kw: '社群經營、社群行銷、玩家社群',
+    first: '觀察一個遊戲或品牌社群一個月，記錄哪些貼文帶動最多互動，以及原因。' },
+  { id: 'pm', name: '產品經理（PM）', code: 'EIC', talents: ['insight', 'orchestrate', 'analysis'], values: ['ach', 'ind'],
+    desc: '決定要做什麼、為誰做，協調設計與工程，把產品做出來並持續改善。', kw: '產品經理、產品企劃、Product Manager',
+    first: '挑一個你常用的 App，寫一份「問題、假設、改版提案、成效指標」的產品提案。' },
+  { id: 'uxr', name: '使用者研究（UX Research）', code: 'IAS', talents: ['insight', 'analysis', 'people'], values: ['ach', 'ind'],
+    desc: '訪談與測試使用者，找出卡點，讓產品更好用。', kw: '使用者研究、UX 研究、UX Researcher',
+    first: '找 5 位朋友試玩你的遊戲，記錄他們卡住的地方，寫成一頁研究報告。' },
+  { id: 'uxd', name: 'UI／UX 設計', code: 'AIE', talents: ['taste', 'insight', 'maker'], values: ['ach', 'ind'],
+    desc: '設計介面與流程，讓人一看就懂、用得順手。', kw: 'UI 設計、UX 設計、介面設計',
+    first: '用 Figma 重做一個你覺得難用的畫面，寫下改了什麼、為什麼。' },
+  { id: 'aiadopt', name: 'AI 導入／數位轉型專員', code: 'ECI', talents: ['maker', 'analysis', 'influence'], values: ['ach', 'ind'],
+    desc: '找出公司裡能用 AI 改善的流程，做出原型，推動同事採用。', kw: 'AI 導入、數位轉型、流程改善',
+    first: '把一件重複性的工作做成 AI 小工具，記錄它省下多少時間。' },
+  { id: 'aidev', name: 'AI 應用開發／自動化', code: 'ICR', talents: ['maker', 'analysis', 'order'], values: ['ach', 'ind'],
+    desc: '用程式或 AI 工具，把需求做成穩定運作的系統。', kw: 'AI 應用工程師、自動化工程師、前端工程師',
+    first: '系統性學一門基礎（例如 JavaScript），讓自己看得懂、改得動 AI 寫出的程式。' },
+  { id: 'data', name: '數據分析師', code: 'CIE', talents: ['analysis', 'order', 'insight'], values: ['ach', 'con'],
+    desc: '整理資料、做報表與分析，把數字變成決策建議。', kw: '數據分析、資料分析師、BI',
+    first: '拿一份公開資料（例如遊戲排行榜），用試算表做一頁有結論的分析。' },
+  { id: 'project', name: '專案經理／專案企劃', code: 'ECS', talents: ['orchestrate', 'order', 'influence'], values: ['ach', 'sup'],
+    desc: '排時程、管資源、追進度，讓跨部門的事情如期完成。', kw: '專案經理、專案企劃、PMO',
+    first: '把一個你做過的專案，用時程表和風險清單重新整理一次。' },
+  { id: 'bd', name: '業務開發（BD）', code: 'ESC', talents: ['influence', 'people', 'adapt'], values: ['rec', 'ach'],
+    desc: '開發合作夥伴與新客戶，談條件、建立長期關係。', kw: '業務開發、商務開發、BD',
+    first: '鎖定一個產業，列出 20 家潛在合作對象，以及你能提供給他們的價值。' },
+  { id: 'cs', name: '客戶經營／客戶成功', code: 'SEC', talents: ['people', 'insight', 'orchestrate'], values: ['rel', 'ach'],
+    desc: '照顧既有客戶，幫他們把產品用好，促成續約與擴大合作。', kw: '客戶成功、客戶經理、Account Manager',
+    first: '整理一次你處理難搞客人或同事的經驗，寫成 STAR 案例。' },
+  { id: 'hr', name: '人資／招募', code: 'SEC', talents: ['people', 'influence', 'order'], values: ['rel', 'sup'],
+    desc: '找人、選人、留人，設計讓員工好好發揮的制度。', kw: '人資專員、招募專員、HRBP',
+    first: '把一次你調整人員配置的經驗，寫成一個「人才配置」案例。' },
+  { id: 'training', name: '教育訓練／講師', code: 'SAE', talents: ['people', 'influence', 'orchestrate'], values: ['rel', 'ach'],
+    desc: '設計課程與活動，帶一群人學會新東西。', kw: '教育訓練、培訓講師、企業內訓',
+    first: '把你會的一件事（例如用 AI 做遊戲）設計成 30 分鐘工作坊，實際帶一次。' },
+  { id: 'hospitality', name: '餐飲／旅宿營運管理', code: 'ESR', talents: ['orchestrate', 'people', 'adapt'], values: ['ach', 'rec'],
+    desc: '管理現場人力、品質與成本，讓每一個尖峰都順利過去。', kw: '餐飲儲備幹部、店長、旅宿營運',
+    first: '把一個現場的人力與出餐流程整理成一頁 SOP，當作管理職面試素材。' },
+  { id: 'ops', name: '營運管理（零售／連鎖／物流）', code: 'ECR', talents: ['orchestrate', 'analysis', 'order'], values: ['ach', 'con'],
+    desc: '優化門市或物流的流程、排班與指標。', kw: '營運專員、營運管理、儲備幹部',
+    first: '觀察一家連鎖店尖峰時段的動線與瓶頸，寫一頁改善建議。' },
+  { id: 'ga', name: '總務／行政企劃', code: 'CES', talents: ['order', 'orchestrate', 'analysis'], values: ['con', 'sup'],
+    desc: '管理資產、採購、空間與活動，讓辦公室順利運作。', kw: '總務、行政企劃、行政專員',
+    first: '把一個行政流程（例如派車）畫成流程圖，找出可以數位化的一步。' },
+  { id: 'founder', name: '創業／個人品牌', code: 'EAI', talents: ['ideate', 'maker', 'adapt'], values: ['ind', 'ach'],
+    desc: '自己找題目、做產品，找到願意付費的人。', kw: '新創、創業、個人品牌',
+    first: '用最小成本做出一個能收到第一筆付款的東西，例如一個付費小工具或服務。' },
+  { id: 'pr', name: '公關／品牌溝通', code: 'EAS', talents: ['influence', 'ideate', 'insight'], values: ['rec', 'rel'],
+    desc: '替品牌說故事，經營媒體關係與危機溝通。', kw: '公關、品牌公關、PR',
+    first: '替一個品牌寫一則新聞稿，想一個讓媒體願意報導的切角。' },
+  { id: 'coach', name: '運動／戶外教練', code: 'SRE', talents: ['people', 'adapt', 'influence'], values: ['rel', 'ind'],
+    desc: '帶學員安全地學會技能，在戶外現場工作。', kw: '教練、滑雪教練、戶外領隊',
+    first: '考一張入門證照，先用兼職或季節工累積教學時數。' },
+  { id: 'research', name: '市場研究／研究員', code: 'ICE', talents: ['analysis', 'order', 'ideate'], values: ['ach', 'ind'],
+    desc: '設計研究、收集資料，寫出有根據的結論。', kw: '市場研究、研究助理、研究員',
+    first: '針對一個問題做 10 份問卷或 5 場訪談，寫成一頁研究摘要。' },
+  { id: 'finance', name: '財務／會計', code: 'CEI', talents: ['order', 'analysis'], values: ['con', 'sup'],
+    desc: '記帳、報表、預算控管，讓公司的錢有條有理。', kw: '會計、財務專員、成本會計',
+    first: '先上一門會計入門課，確認自己是否喜歡長時間處理數字。' },
+  { id: 'tech', name: '技術員／設備工程', code: 'RIC', talents: ['maker', 'order', 'analysis'], values: ['con', 'ind'],
+    desc: '操作、維修與檢測設備，在現場解決實際問題。', kw: '技術員、設備工程師、品保',
+    first: '參加一門職訓局的技術課程，確認自己是否喜歡動手修東西。' },
+  { id: 'counsel', name: '職涯顧問／獵頭', code: 'SEI', talents: ['people', 'insight', 'influence'], values: ['rel', 'ach'],
+    desc: '陪人釐清方向、媒合工作，給出可行的下一步。', kw: '職涯顧問、獵頭顧問、人才顧問',
+    first: '幫 3 位朋友整理履歷與方向，記錄他們的回饋。' },
+  { id: 'teacher', name: '教師／補教老師', code: 'SAE', talents: ['people', 'influence', 'ideate'], values: ['rel', 'ach'],
+    desc: '把知識講清楚、講有趣，陪學生進步。', kw: '補教老師、課輔老師、講師',
+    first: '試教一堂 20 分鐘的課，請聽眾給你回饋。' }
+];
+var BACKGROUND = '';
+var SECTIONS = {
+  riasec: { no: 1, title: '興趣', sub: '你喜歡做什麼', meta: '48 題・約 4 分鐘',
+    intro: '接下來是 48 件不同的工作活動。不用考慮薪水、學歷，或自己會不會做，只要憑直覺回答喜不喜歡。',
+    source: '題目改編自美國勞工部 O*NET 興趣量表（公有領域）。' },
+  big5: { no: 2, title: '個性', sub: '你是怎樣的人', meta: '20 題・約 2 分鐘',
+    intro: '以平常的你為準，不是你希望成為的樣子。和你認識的同齡人比較，選出最接近的程度。',
+    source: '題目為 Mini-IPIP 五大人格量表（Donnellan 等人，2006；IPIP 公有領域）的中文翻譯。' },
+  talent: { no: 3, title: '天賦', sub: '你自然做得好的事', meta: '30 題・約 4 分鐘',
+    intro: '想想你實際做過的事，不是你覺得自己應該要會的事。越誠實，結果越準。',
+    source: '這部分是 Claude 自編的行為題，只看你自己內部的相對排序。' },
+  values: { no: 4, title: '價值觀', sub: '你在工作中最在乎什麼', meta: '排序 6 張卡・約 1 分鐘',
+    intro: '把六張卡片依重要程度排序。每一張都很好，但現實中常得取捨，排在前面的，是你最不願意放棄的。',
+    source: '六種價值參考 O*NET 的工作價值分類。' }
+};
+var SCALES = {
+  riasec: { prompt: '你喜歡做這件事嗎？', labels: ['非常不喜歡', '不喜歡', '不確定', '喜歡', '非常喜歡'] },
+  big5: { prompt: '這句話描述你的程度？', labels: ['非常不符合', '不太符合', '一半一半', '還算符合', '非常符合'] },
+  talent: { prompt: '這句話像你嗎？', labels: ['完全不像我', '不太像', '有時候像', '很像我', '根本就是我'] }
+};
+var EXAMPLE = { R: 28, I: 46, A: 74, S: 58, E: 82, C: 36 };
+
+/* ================= steps ================= */
+var STEPS = [];
+var riQs = [], b5Qs = [], tQs = [];
+(function () {
+  var i;
+  for (i = 0; i < 8; i++) HEX.forEach(function (L) { riQs.push({ id: 'r' + L + i, key: L, text: RI_ITEMS[L][i] }); });
+  B5.forEach(function (q, j) { b5Qs.push({ id: 'b' + j, key: q.k, rev: q.rev, text: q.t }); });
+  for (i = 0; i < 3; i++) T_ORDER.forEach(function (k) { tQs.push({ id: 't' + k + i, key: k, text: TALENTS[k].items[i] }); });
+  function addSection(sec, qs) {
+    SECTIONS[sec].count = qs.length;
+    STEPS.push({ type: 'section', sec: sec });
+    qs.forEach(function (q, n) { STEPS.push({ type: 'q', sec: sec, n: n + 1, id: q.id, key: q.key, rev: q.rev, text: q.text }); });
+  }
+  addSection('riasec', riQs); addSection('big5', b5Qs); addSection('talent', tQs);
+  STEPS.push({ type: 'section', sec: 'values' });
+  STEPS.push({ type: 'values', sec: 'values' });
+})();
+var ALL_Q = STEPS.filter(function (s) { return s.type === 'q'; });
+var TOTAL_Q = ALL_Q.length + 1;
+
+/* ================= state ================= */
+function freshState(observe) {
+  return { screen: 'intro', idx: 0, ans: {}, values: [], observe: false, doneAt: null, savedFor: null, letter: null };
+}
+var state = freshState(true);
+function sanitize(s) {
+  var f = freshState(true);
+  if (!s || typeof s !== 'object') return f;
+  f.screen = ['intro', 'quiz', 'results'].indexOf(s.screen) >= 0 ? s.screen : 'intro';
+  f.idx = (typeof s.idx === 'number' && s.idx >= 0 && s.idx < STEPS.length) ? Math.floor(s.idx) : 0;
+  if (s.ans && typeof s.ans === 'object') ALL_Q.forEach(function (q) { var v = s.ans[q.id]; if (v === 1 || v === 2 || v === 3 || v === 4 || v === 5) f.ans[q.id] = v; });
+  if (Array.isArray(s.values)) f.values = s.values.filter(function (k, i, a) { return VKEYS.indexOf(k) >= 0 && a.indexOf(k) === i; });
+  f.observe = false;
+  f.doneAt = typeof s.doneAt === 'string' ? s.doneAt : null;
+  f.savedFor = typeof s.savedFor === 'string' ? s.savedFor : null;
+  f.letter = typeof s.letter === 'string' ? s.letter : null;
+  if (f.screen === 'results' && !f.doneAt) f.screen = 'intro';
+  return f;
+}
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ } }
+function loadLocal() { try { var raw = localStorage.getItem(KEY); if (raw) state = sanitize(JSON.parse(raw)); } catch (e) { /* ignore */ } }
+function countAnswered() {
+  var n = 0; ALL_Q.forEach(function (q) { if (state.ans[q.id]) n++; });
+  return n + (state.values.length === 6 ? 1 : 0);
+}
+
+/* ================= capabilities ================= */
+var caps = {};
+function use(name) {
+  if (!caps[name]) {
+    var c = window.claude;
+    caps[name] = (c && typeof c.use === 'function')
+      ? Promise.resolve().then(function () { return c.use(name); }).catch(function () { return null; })
+      : Promise.resolve(null);
+  }
+  return caps[name];
+}
+
+/* ================= scoring ================= */
+function mean(list) { var s = 0, n = 0; list.forEach(function (v) { if (v) { s += v; n++; } }); return n ? s / n : 3; }
+function compute() {
+  var a = state.ans, ri = {}, b5 = {}, t = {};
+  HEX.forEach(function (L) {
+    var m = mean(riQs.filter(function (q) { return q.key === L; }).map(function (q) { return a[q.id]; }));
+    ri[L] = Math.round((m - 1) / 4 * 100);
+  });
+  var order = HEX.slice().sort(function (x, y) { return (ri[y] - ri[x]) || (HEX.indexOf(x) - HEX.indexOf(y)); });
+  ['E', 'A', 'C', 'N', 'O'].forEach(function (k) {
+    b5[k] = mean(b5Qs.filter(function (q) { return q.key === k; }).map(function (q) { var v = a[q.id]; return v ? (q.rev ? 6 - v : v) : 0; }));
+  });
+  b5.ES = 6 - b5.N;
+  T_ORDER.forEach(function (k) { t[k] = mean(tQs.filter(function (q) { return q.key === k; }).map(function (q) { return a[q.id]; })); });
+  var tRank = T_ORDER.slice().sort(function (x, y) { return (t[y] - t[x]) || (T_ORDER.indexOf(x) - T_ORDER.indexOf(y)); });
+  var vals = state.values.slice(); VKEYS.forEach(function (k) { if (vals.indexOf(k) < 0) vals.push(k); });
+  function norm(obj, keys) {
+    var vs = keys.map(function (k) { return obj[k]; }), mn = Math.min.apply(null, vs), mx = Math.max.apply(null, vs), o = {};
+    keys.forEach(function (k) { o[k] = mx === mn ? 0.5 : (obj[k] - mn) / (mx - mn); });
+    return o;
+  }
+  var rN = norm(ri, HEX), tN = norm(t, T_ORDER), vS = {};
+  vals.forEach(function (k, i) { vS[k] = (5 - i) / 5; });
+  var careers = CAREERS.map(function (c) {
+    var L = c.code.split('');
+    var rf = (3 * rN[L[0]] + 2 * rN[L[1]] + rN[L[2]]) / 6;
+    var tf = c.talents.reduce(function (s, k) { return s + tN[k]; }, 0) / c.talents.length;
+    var vf = c.values.reduce(function (s, k) { return s + vS[k]; }, 0) / c.values.length;
+    return Object.assign({}, c, { rf: rf, tf: tf, vf: vf, score: Math.round((0.5 * rf + 0.35 * tf + 0.15 * vf) * 100) });
+  }).sort(function (x, y) { return y.score - x.score; });
+  return { ri: ri, order: order, code: order.slice(0, 3).join(''), b5: b5, t: t, tRank: tRank, vals: vals, careers: careers };
+}
+function archeOf(R) { return TALENTS[R.tRank[1]].adj + TALENTS[R.tRank[0]].noun; }
+function band(v) { return v >= 3.75 ? 'hi' : (v <= 2.5 ? 'lo' : 'mid'); }
+var BAND_LABEL = { hi: '偏高', mid: '中等', lo: '偏低' };
+function hexDist(a, b) { var d = Math.abs(HEX.indexOf(a) - HEX.indexOf(b)); return Math.min(d, 6 - d); }
+function consistency(a, b) {
+  var d = hexDist(a, b);
+  if (d === 1) return { label: '高', text: a + ' 和 ' + b + ' 在六角形上相鄰，兩種興趣彼此相近，比較容易找到同時滿足兩者的工作。' };
+  if (d === 2) return { label: '中', text: a + ' 和 ' + b + ' 在六角形上隔一格，興趣有交集也有差異，適合找能同時用到兩者的角色。' };
+  return { label: '低', text: a + ' 和 ' + b + ' 在六角形的對角，興趣看起來方向相反。好處是視角少見，挑戰是很難在同一份工作同時滿足，可以讓工作滿足一種、興趣或副業滿足另一種。' };
+}
+function differentiation(ri) {
+  var vs = HEX.map(function (L) { return ri[L]; }), mx = Math.max.apply(null, vs), mn = Math.min.apply(null, vs), d = mx - mn;
+  if (mx < 45) return { label: '偏低', text: '你對這些活動的興趣普遍不高。可能是最近比較累，也可能是這些傳統職業活動和你在乎的事距離較遠。這種情況下，天賦和價值觀的結果更值得參考。' };
+  if (d >= 45) return { label: '明顯', text: '最高和最低差了 ' + d + ' 分，你喜歡和不喜歡的事很清楚，方向比較好收斂。' };
+  if (d >= 25) return { label: '中等', text: '最高和最低差了 ' + d + ' 分，你有明確的偏好，也保留不少彈性。' };
+  return { label: '廣泛', text: '最高和最低只差 ' + d + ' 分，你的興趣很廣。這在轉換跑道的人身上很常見，好處是選擇多，挑戰是要靠天賦和價值觀來幫你收斂。' };
+}
+function fmtDate(iso) { var d = new Date(iso); if (isNaN(d)) return ''; return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate(); }
+function ymd(iso) { var d = new Date(iso); if (isNaN(d)) d = new Date(); function p(n) { return (n < 10 ? '0' : '') + n; } return '' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()); }
+function pct(x) { return Math.round(x * 100); }
+function tn(k) { return TALENTS[k].name; }
+
+/* ================= views ================= */
+function hexSVG(vals, mini) {
+  var W = 360, H = 330, cx = 180, cy = 165, rad = 104, g = '';
+  function pt(i, r) { var a = (-90 + 60 * i) * Math.PI / 180; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+  function xy(p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }
+  [25, 50, 75, 100].forEach(function (p) { g += '<polygon class="hx-ring" points="' + HEX.map(function (_, i) { return xy(pt(i, rad * p / 100)); }).join(' ') + '"/>'; });
+  HEX.forEach(function (_, i) { var p = pt(i, rad); g += '<line class="hx-axis" x1="' + cx + '" y1="' + cy + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '"/>'; });
+  g += '<polygon class="hx-shape" points="' + HEX.map(function (L, i) { return xy(pt(i, rad * Math.max(4, vals[L]) / 100)); }).join(' ') + '"/>';
+  HEX.forEach(function (L, i) { var p = pt(i, rad * Math.max(4, vals[L]) / 100); g += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (mini ? 4 : 5) + '" fill="var(--t-' + L + ')"/>'; });
+  HEX.forEach(function (L, i) {
+    var p = pt(i, rad + 18), c = Math.cos((-90 + 60 * i) * Math.PI / 180);
+    var anchor = Math.abs(c) < 0.1 ? 'middle' : (c > 0 ? 'start' : 'end');
+    if (mini) {
+      var dyM = i === 0 ? -4 : (i === 3 ? 22 : 9);
+      g += '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] + dyM).toFixed(1) + '" text-anchor="' + anchor + '" class="hx-letter" fill="var(--t-' + L + ')">' + L + '</text>';
+    } else {
+      var dy = i === 0 ? -18 : (i === 3 ? 14 : -3);
+      g += '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] + dy).toFixed(1) + '" text-anchor="' + anchor + '" class="hx-l"><tspan class="hx-letter" fill="var(--t-' + L + ')">' + L + '</tspan> ' + RIASEC[L].name + '</text>';
+      g += '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] + dy + 17).toFixed(1) + '" text-anchor="' + anchor + '" class="hx-v">' + vals[L] + '</text>';
+    }
+  });
+  var label = 'Holland 六角形：' + HEX.map(function (L) { return L + ' ' + RIASEC[L].name + ' ' + vals[L]; }).join('，');
+  return '<svg class="' + (mini ? 'mini' : '') + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + label + '">' + g + '</svg>';
+}
+
+function viewIntro() {
+  var answered = countAnswered(), finished = !!state.doneAt, resume = !finished && answered > 0;
+  var parts = ['riasec', 'big5', 'talent', 'values'].map(function (k) {
+    var s = SECTIONS[k];
+    return '<li><span class="pn">' + s.no + '</span><div><b>' + s.title + '</b><span>' + s.sub + '</span><small>' + s.meta + '</small></div></li>';
+  }).join('');
+  var btns = finished
+    ? '<button class="btn primary" data-act="show-results">查看上次結果</button><button class="btn ghost" data-act="restart">重新測驗</button>'
+    : resume
+      ? '<button class="btn primary" data-act="resume">繼續作答（' + answered + ' / ' + TOTAL_Q + '）</button><button class="btn ghost" data-act="restart">從頭開始</button>'
+      : '<button class="btn primary" data-act="begin">開始測驗</button>';
+  return '<section class="intro">' +
+    '<p class="eyebrow">職涯探索・約 12 分鐘</p>' +
+    '<h1 class="display">天賦羅盤</h1>' +
+    '<p class="lede">從四個面向找出你最能發揮的方向：你喜歡做什麼、你是怎樣的人、你自然做得好什麼，以及你在工作裡最在乎什麼。</p>' +
+    '<ol class="parts">' + parts + '</ol>' +
+    '<div class="actions">' + btns + '</div>' +
+    '<aside class="preview"><div><p class="eyebrow">你會得到</p><ul class="getlist"><li>Holland 興趣代碼與六角形圖</li><li>十種天賦的排序與你的類型</li><li>五大人格輪廓與工作價值觀</li><li>最契合的職涯方向與 90 天行動計畫</li></ul></div>' +
+    '<figure class="mini-hex">' + hexSVG(EXAMPLE, true) + '<figcaption>範例圖，不是你的結果</figcaption></figure></aside>' +
+    '</section>';
+}
+
+function viewSection(step) {
+  var s = SECTIONS[step.sec];
+  return '<section class="sec-intro">' +
+    '<p class="eyebrow">第 ' + s.no + ' 部分，共 4 部分・' + s.meta + '</p>' +
+    '<h2 class="display">' + s.title + '<span>' + s.sub + '</span></h2>' +
+    '<p class="body">' + s.intro + '</p>' +
+    '<p class="note">' + s.source + '</p>' +
+    '<div class="actions"><button class="btn primary" data-act="next" data-focus>開始這部分</button><button class="btn ghost" data-act="back">上一步</button></div>' +
+    '</section>';
+}
+
+var notice = '';
+function viewQuestion(step) {
+  var sc = SCALES[step.sec], s = SECTIONS[step.sec], cur = state.ans[step.id];
+  var opts = sc.labels.map(function (l, i) {
+    var on = cur === i + 1;
+    return '<button class="opt' + (on ? ' on' : '') + '" data-val="' + (i + 1) + '" aria-pressed="' + on + '"><span class="k">' + (i + 1) + '</span><span class="l">' + l + '</span></button>';
+  }).join('');
+  var n = notice; notice = '';
+  return '<section class="qwrap">' +
+    '<div class="qmeta"><span class="sec-tag">' + s.no + '・' + s.title + '</span><span class="count">' + step.n + ' / ' + s.count + '</span></div>' +
+    (n ? '<p class="notice" role="status">' + n + '</p>' : '') +
+    '<div class="qcard"><p class="qprompt">' + sc.prompt + '</p><p class="qtext">' + step.text + '</p>' +
+    '<div class="opts" role="group" aria-label="' + sc.prompt + '">' + opts + '</div></div>' +
+    '<div class="qnav"><button class="link" data-act="back">← 上一題</button><span class="hint">可以用鍵盤 1–5 作答</span>' +
+    (cur ? '<button class="link" data-act="next">下一題 →</button>' : '<span></span>') + '</div>' +
+    '</section>';
+}
+
+function viewValues() {
+  var ord = state.values;
+  var cards = VKEYS.map(function (k) {
+    var r = ord.indexOf(k);
+    return '<button class="vcard' + (r >= 0 ? ' on' : '') + '" data-v="' + k + '" aria-pressed="' + (r >= 0) + '"><span class="vr">' + (r >= 0 ? r + 1 : '') + '</span><b>' + VALUES[k].name + '</b><span class="vd">' + VALUES[k].desc + '</span></button>';
+  }).join('');
+  return '<section class="qwrap">' +
+    '<div class="qmeta"><span class="sec-tag">4・價值觀</span><span class="count">已排 ' + ord.length + ' / 6</span></div>' +
+    '<div class="qcard"><p class="qprompt">從最在乎的開始，依序點選。點已排好的卡片，可以從那一張重新排。</p><div class="vgrid">' + cards + '</div></div>' +
+    '<div class="qnav"><button class="link" data-act="back">← 上一步</button><button class="link" data-act="vreset">全部重排</button><button class="btn primary" data-act="finish"' + (ord.length < 6 ? ' disabled' : '') + '>看我的結果</button></div>' +
+    '</section>';
+}
+
+function tCard(k, R, obs) {
+  var T = TALENTS[k];
+  return '<article class="tcard"><header><span class="t-no">' + (R.tRank.indexOf(k) + 1) + '</span><h3>' + T.name + '</h3><span class="score">' + R.t[k].toFixed(1) + ' / 5</span></header>' +
+    '<p class="one">' + T.one + '</p>' +
+    '<dl><dt>怎麼發揮</dt><dd>' + T.use + '</dd><dt>要小心</dt><dd>' + T.watch + '</dd></dl>' +
+    (obs ? '<p class="evid"><span class="who">Claude 在專案中看到的</span>' + T.ev + '</p>' : '') +
+    '</article>';
+}
+
+function reasons(c, R) {
+  var out = [], top3 = R.order.slice(0, 3), myT = R.tRank.slice(0, 5), myV = R.vals.slice(0, 2);
+  var sl = c.code.split('').filter(function (L) { return top3.indexOf(L) >= 0; });
+  if (sl.length) out.push('興趣重疊：' + sl.map(function (L) { return L + ' ' + RIASEC[L].name; }).join('、'));
+  var st = c.talents.filter(function (k) { return myT.indexOf(k) >= 0; });
+  if (st.length) out.push('用得到你的' + st.map(tn).join('、'));
+  var sv = c.values.filter(function (k) { return myV.indexOf(k) >= 0; });
+  if (sv.length) out.push('滿足你在乎的' + sv.map(function (k) { return VALUES[k].name; }).join('、'));
+  return out;
+}
+
+function cCard(c, i, R, obs) {
+  var why = reasons(c, R);
+  return '<article class="ccard">' +
+    '<div class="c-head"><span class="c-rank">' + (i + 1) + '</span><h3>' + c.name + '</h3><span class="c-score">' + c.score + '<small>%</small></span></div>' +
+    '<p class="c-desc">' + c.desc + '</p>' +
+    (why.length ? '<div class="chips">' + why.map(function (w) { return '<span class="chip">' + w + '</span>'; }).join('') + '</div>' : '') +
+    '<dl class="c-meta">' +
+      '<div><dt>Holland</dt><dd class="mini-code">' + c.code.split('').map(function (L) { return '<span style="--tc:var(--t-' + L + ')">' + L + '</span>'; }).join('') + '</dd></div>' +
+      '<div><dt>104 搜尋</dt><dd>' + c.kw + '</dd></div>' +
+      '<div><dt>第一步</dt><dd>' + c.first + '</dd></div>' +
+      (obs && c.joey ? '<div class="mine"><dt>你已經有的</dt><dd>' + c.joey + '</dd></div>' : '') +
+    '</dl>' +
+    '<div class="c-split">' +
+      [['興趣', c.rf], ['天賦', c.tf], ['價值觀', c.vf]].map(function (p) { return '<div>' + p[0] + ' ' + pct(p[1]) + '<span class="track"><span class="fill" style="width:' + pct(p[1]) + '%"></span></span></div>'; }).join('') +
+    '</div></article>';
+}
+
+var RES = null;
+function viewResults() {
+  var R = compute(); RES = R;
+  var obs = state.observe, t = R.tRank, top = R.careers.slice(0, 6), more = R.careers.slice(6, 12), c0 = top[0];
+  var L0 = R.order[0], L1 = R.order[1], L2 = R.order[2];
+  var cons = consistency(L0, L1), diff = differentiation(R.ri);
+  var under = obs ? T_ORDER.filter(function (k) { return TALENTS[k].lv === 2 && t.indexOf(k) >= 5; }) : [];
+  var low2 = t.slice(-2), blind = c0.talents.filter(function (k) { return t.indexOf(k) >= 6; });
+  var highs = B5KEYS.filter(function (k) { return band(R.b5[k]) === 'hi'; });
+  var lastV = R.vals[5];
+  var kw0 = c0.kw.split('、')[0];
+
+  var hero = '<header class="r-hero">' +
+    '<p class="eyebrow">你的天賦羅盤・' + fmtDate(state.doneAt) + '</p>' +
+    '<h1 class="display arche">' + archeOf(R) + '</h1>' +
+    '<p class="lede">你的興趣以' + RIASEC[L0].name + '（' + L0 + '）和' + RIASEC[L1].name + '（' + L1 + '）為主，最自然的天賦是' + tn(t[0]) + '、' + tn(t[1]) + '和' + tn(t[2]) + '，工作上最在乎' + VALUES[R.vals[0]].name + '。綜合四個面向，最值得優先探索的是「' + top[0].name + '」，其次是「' + top[1].name + '」和「' + top[2].name + '」。</p>' +
+    '<dl class="keyfacts">' +
+      '<div><dt>興趣代碼</dt><dd class="code">' + R.code.split('').map(function (L) { return '<span style="--tc:var(--t-' + L + ')">' + L + '</span>'; }).join('') + '</dd></div>' +
+      '<div><dt>核心天賦</dt><dd>' + t.slice(0, 3).map(tn).join('・') + '</dd></div>' +
+      '<div><dt>最在乎</dt><dd>' + VALUES[R.vals[0]].name + '・' + VALUES[R.vals[1]].name + '</dd></div>' +
+      '<div><dt>最契合方向</dt><dd>' + top[0].name + '</dd></div>' +
+    '</dl></header>';
+
+  var interest = '<section class="r-sec" id="sec-interest">' +
+    '<div class="sec-head"><p class="eyebrow">興趣 INTEREST</p><h2>你的 Holland 代碼是 ' + R.code + '</h2></div>' +
+    '<div class="interest"><figure class="hex">' + hexSVG(R.ri, false) + '</figure>' +
+    '<div class="bars">' + R.order.map(function (L) {
+      return '<div class="bar-row" style="--tc:var(--t-' + L + ')"><span class="bl"><b>' + L + '</b>' + RIASEC[L].name + '</span><span class="track"><span class="fill" style="width:' + Math.max(2, R.ri[L]) + '%"></span></span><span class="bv">' + R.ri[L] + '</span></div>';
+    }).join('') + '</div></div>' +
+    '<div class="prose">' +
+      '<p>第一碼最能代表你：<b>' + L0 + ' ' + RIASEC[L0].name + '</b>。' + RIASEC[L0].desc + '常見的環境有' + RIASEC[L0].env + '。</p>' +
+      '<p>第二、三碼是 <b>' + L1 + ' ' + RIASEC[L1].name + '</b> 和 <b>' + L2 + ' ' + RIASEC[L2].name + '</b>。' + RIASEC[L1].desc + RIASEC[L2].desc + '</p>' +
+      '<p><b>一致性：' + cons.label + '。</b>' + cons.text + '</p>' +
+      '<p><b>分化程度：' + diff.label + '。</b>' + diff.text + '</p>' +
+    '</div></section>';
+
+  var talent = '<section class="r-sec" id="sec-talent">' +
+    '<div class="sec-head"><p class="eyebrow">天賦 TALENTS</p><h2>你自然做得好的事：' + t.slice(0, 3).map(tn).join('、') + '</h2></div>' +
+    '<p class="prose-p">天賦是「做起來自然、學得快、做完有能量」的模式。下面是十種天賦的自評排序，前三名是你的核心天賦，第四、五名是輔助天賦。</p>' +
+    '<div class="bars">' + t.map(function (k, i) {
+      var col = i < 3 ? 'var(--needle)' : (i < 5 ? 'var(--navy)' : 'var(--ink-3)');
+      return '<div class="bar-row" style="--tc:' + col + '"><span class="bl">' + (i + 1) + '. ' + tn(k) + '</span><span class="track"><span class="fill" style="width:' + Math.max(2, Math.round((R.t[k] - 1) / 4 * 100)) + '%"></span></span><span class="bv">' + R.t[k].toFixed(1) + '</span></div>';
+    }).join('') + '</div>' +
+    '<div class="t-grid">' + t.slice(0, 3).map(function (k) { return tCard(k, R, obs); }).join('') + '</div>' +
+    '<div class="t-support">' + t.slice(3, 5).map(function (k) { return '<div class="ts"><span class="t-no">' + (t.indexOf(k) + 1) + '</span><div><b>' + tn(k) + '</b><span class="tx">' + TALENTS[k].one + '</span></div></div>'; }).join('') + '</div>' +
+    (under.length ? '<div class="callout"><p class="eyebrow">可能被你低估的天賦</p><p>下面這些你排在後半段，但 Claude 在專案中看過具體的例子。自評常會低估「做起來太自然、自己沒感覺」的能力。</p><ul>' +
+      under.map(function (k) { return '<li><b>' + tn(k) + '（你排第 ' + (t.indexOf(k) + 1) + '）</b>：' + TALENTS[k].ev + '</li>'; }).join('') + '</ul></div>' : '') +
+    '<div class="callout"><p class="eyebrow">能量較低的區域</p><p><b>' + low2.map(tn).join('、') + '</b>不是缺點，只是你比較不會主動使用的方式。工作需要時，可以找擅長的搭檔，或用工具和流程補上。</p></div>' +
+    '</section>';
+
+  var person = '<section class="r-sec" id="sec-person">' +
+    '<div class="sec-head"><p class="eyebrow">個性 PERSONALITY</p><h2>' + (highs.length ? '最鮮明的特質：' + highs.map(function (k) { return B5INFO[k].name; }).join('、') + '偏高' : '你的五大人格大多落在中段') + '</h2></div>' +
+    '<div class="b5">' + B5KEYS.map(function (k) {
+      var v = R.b5[k], b = band(v);
+      return '<div class="b5-row"><div class="b5-top"><b>' + B5INFO[k].name + '</b><span class="band ' + b + '">' + BAND_LABEL[b] + '</span><span class="bv">' + v.toFixed(1) + '</span></div>' +
+        '<span class="track scale"><span class="fill" style="width:' + Math.max(2, Math.round((v - 1) / 4 * 100)) + '%"></span><span class="mid"></span></span>' +
+        '<p>' + B5INFO[k][b] + '</p></div>';
+    }).join('') + '</div>' +
+    '<p class="note">分數範圍 1–5，中間的白線是 3 分。這裡沒有台灣常模，「偏高、偏低」是依分數區間判斷（3.75 以上、2.5 以下），不是和別人比較。情緒穩定性是「神經質」分數反過來算的。</p>' +
+    '</section>';
+
+  var values = '<section class="r-sec" id="sec-values">' +
+    '<div class="sec-head"><p class="eyebrow">價值觀 VALUES</p><h2>你最在乎' + VALUES[R.vals[0]].name + '和' + VALUES[R.vals[1]].name + '</h2></div>' +
+    '<ol class="vlist">' + R.vals.map(function (k, i) {
+      return '<li><span class="vn">' + (i + 1) + '</span><div><b>' + VALUES[k].name + '</b><p>' + VALUES[k].desc + '</p>' + (i < 2 ? '<p class="ask">面試時可以問：「' + VALUES[k].ask + '」</p>' : '') + '</div></li>';
+    }).join('') + '</ol>' +
+    '<p class="note">排在最後的「' + VALUES[lastV].name + '」不代表不重要，而是當它和前面幾項衝突時，你比較願意讓步。</p>' +
+    '</section>';
+
+  var careers = '<section class="r-sec" id="sec-careers">' +
+    '<div class="sec-head"><p class="eyebrow">方向 DIRECTIONS</p><h2>最契合你的六個方向</h2></div>' +
+    '<p class="prose-p">從 ' + CAREERS.length + ' 個職涯方向中，依興趣 50%、天賦 35%、價值觀 15% 計算相對契合度。分數是和你自己的其他選項比較，不是錄取機率。</p>' +
+    '<div class="cgrid">' + top.map(function (c, i) { return cCard(c, i, R, obs); }).join('') + '</div>' +
+    '<h3 class="sub">也可以看看</h3>' +
+    '<ul class="more">' + more.map(function (c) { return '<li><span>' + c.name + '</span><span class="s">' + c.score + '%</span></li>'; }).join('') + '</ul>' +
+    '</section>';
+
+  var plan = '<section class="r-sec" id="sec-plan">' +
+    '<div class="sec-head"><p class="eyebrow">行動 NEXT 90 DAYS</p><h2>你的努力方向</h2></div>' +
+    '<p class="prose-p">以最契合的「' + c0.name + '」為主軸。如果你心裡更想走第二或第三個方向，把方向換掉，步驟一樣適用。</p>' +
+    '<ol class="plan">' +
+      '<li><p class="ph">第 1–30 天<b>看清楚</b></p><ul><li>在 104 人力銀行搜尋「' + kw0 + '」，讀 10 份職缺，把重複出現的要求標出來，和你的天賦對照。</li><li>找 1–2 位正在做這份工作的人聊 20 分鐘，問他們最常做、最累、最有成就感的事。</li></ul></li>' +
+      '<li><p class="ph">第 31–60 天<b>做出一件作品</b></p><ul><li>' + c0.first + '</li><li>做的時候刻意用上你的「' + tn(t[0]) + '」：' + TALENTS[t[0]].use + '</li></ul></li>' +
+      '<li><p class="ph">第 61–90 天<b>投出去、拿回饋</b></p><ul><li>把作品放進履歷和一分鐘自我介紹，投遞 10 個職缺。</li><li>每次面試後，記下被問倒的問題，那就是下一輪要補的東西。</li></ul></li>' +
+    '</ol>' +
+    '<div class="callout"><p class="eyebrow">長期值得投資的</p><p>你的天賦組合是<b>' + tn(t[0]) + '＋' + tn(t[1]) + '</b>。不管最後走哪一條路，都值得長期練習：</p><ul><li>' + TALENTS[t[0]].grow + '。</li><li>' + TALENTS[t[1]].grow + '。</li></ul></div>' +
+    (blind.length ? '<div class="callout"><p class="eyebrow">這個方向的盲點</p><p>「' + c0.name + '」需要' + blind.map(tn).join('、') + '，這是你比較少用的能量。可以找擅長的搭檔，或用工具與流程補上。</p></div>' : '') +
+    '</section>';
+
+  var ai = '<section class="r-sec" id="sec-ai"' + (state.letter ? '' : ' hidden') + '>' +
+    '<div class="sec-head"><p class="eyebrow">解讀信 LETTER</p><h2>請 Claude 綜合解讀</h2></div>' +
+    '<p class="prose-p ai-intro">Claude 會綜合四個面向' + (obs ? '和專案觀察' : '') + '，寫一封約 700 字的解讀信，指出結果之間的呼應與矛盾。會用到你自己的 Claude 用量，第一次使用時會先詢問你。</p>' +
+    '<div class="actions ai-ctl"><button class="btn primary" data-act="ai-go" id="ai-go">' + (state.letter ? '重寫一封' : '寫解讀信') + '</button><button class="btn ghost" data-act="ai-stop" id="ai-stop" hidden>停止</button></div>' +
+    '<div class="letter" id="ai-out" aria-live="polite">' + (state.letter ? md(state.letter) : '') + '</div>' +
+    '<p class="note" id="ai-note"></p>' +
+    '</section>';
+
+  var about = '<section class="r-sec" id="sec-about">' +
+    '<div class="sec-head"><p class="eyebrow">關於這份測驗 METHOD</p><h2>怎麼讀這份結果</h2></div>' +
+    '<ul class="about">' +
+      '<li><b>興趣</b>：題目改編自美國勞工部 O*NET 興趣量表（公有領域），依 Holland 的 RIASEC 六型理論計分。原本的短版每型 10 題，這裡每型 8 題並改成台灣用語，適合用來探索，不等同正式施測。</li>' +
+      '<li><b>個性</b>：Mini-IPIP 五大人格量表（Donnellan 等人，2006）的中文翻譯，共 20 題。</li>' +
+      '<li><b>天賦</b>：Claude 依「做起來自然、學得快、做完有能量」這些天賦線索自編的 30 題，沒有經過信效度驗證，只看你自己的相對排序。</li>' +
+      '<li><b>價值觀</b>：參考 O*NET 的六種工作價值（成就、自主、認可、關係、支持、工作條件）。</li>' +
+      '<li><b>職涯配對</b>：每個方向的 Holland 代碼，是參考 O*NET 相近職業估計的。</li>' +
+      '<li><b>限制</b>：興趣和個性不等於能力，測驗反映的是你現在怎麼看自己。最可靠的答案，來自把結果拿到真實世界試一次。</li>' +
+    '</ul></section>';
+
+  var actions = '<footer class="r-actions no-export">' +
+    '<p class="save-status" id="save-status" data-s="connecting">正在確認儲存功能…</p>' +
+    '<div class="actions"><button class="btn primary" data-act="save" id="btn-save" hidden>儲存結果</button>' +
+    '<button class="btn ghost" data-act="copy">複製結果摘要</button>' +
+    '<button class="btn ghost" data-act="download" id="btn-dl" hidden>下載報告</button>' +
+    '<button class="btn ghost" data-act="restart">重新測驗</button></div>' +
+    '<textarea id="copy-fallback" readonly hidden aria-label="結果摘要"></textarea>' +
+    '</footer>';
+
+  return '<article id="report" class="report">' + hero + interest + talent + person + values + careers + plan + ai + about + actions + '</article>';
+}
+
+/* ================= render & navigation ================= */
+var lastKey = '';
+function render() {
+  var view = $('#view'), html, key;
+  if (state.screen === 'results' && state.doneAt) { html = viewResults(); key = 'results'; }
+  else if (state.screen === 'quiz') {
+    var st = STEPS[state.idx]; key = 'q' + state.idx;
+    html = st.type === 'section' ? viewSection(st) : (st.type === 'q' ? viewQuestion(st) : viewValues());
+  } else { state.screen = 'intro'; html = viewIntro(); key = 'intro'; }
+  view.innerHTML = html;
+  updateTopbar();
+  if (key !== lastKey) { window.scrollTo(0, 0); lastKey = key; }
+  var f = view.querySelector('[data-focus]');
+  if (f) { try { f.focus({ preventScroll: true }); } catch (e) { f.focus(); } }
+  if (state.screen === 'results') afterResults();
+}
+function updateTopbar() {
+  var pb = $('#pbar'), fill = $('#pbar-fill'), tp = $('#tb-progress'), n = countAnswered();
+  if (state.screen === 'quiz') { pb.hidden = false; fill.style.width = (n / TOTAL_Q * 100).toFixed(1) + '%'; tp.textContent = n + ' / ' + TOTAL_Q; }
+  else { pb.hidden = true; tp.textContent = state.screen === 'results' ? '你的結果' : ''; }
+  var needle = $('.mark .needle');
+  if (needle) needle.style.transform = 'rotate(' + (state.screen === 'results' && RES ? HEX.indexOf(RES.order[0]) * 60 : 0) + 'deg)';
+}
+var lock = false;
+var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+function answer(v) {
+  var st = STEPS[state.idx];
+  if (state.screen !== 'quiz' || !st || st.type !== 'q' || lock) return;
+  state.ans[st.id] = v; persist();
+  Array.prototype.forEach.call(document.querySelectorAll('.opt'), function (b) { var on = +b.dataset.val === v; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+  updateTopbar();
+  lock = true;
+  setTimeout(function () { lock = false; if (STEPS[state.idx] === st && state.screen === 'quiz') next(); }, reduceMotion ? 60 : 180);
+}
+function next() { if (state.idx < STEPS.length - 1) { state.idx++; persist(); render(); } }
+function back() {
+  if (state.screen !== 'quiz') return;
+  if (state.idx > 0) state.idx--; else state.screen = 'intro';
+  persist(); render();
+}
+function toggleValue(k) {
+  var i = state.values.indexOf(k);
+  if (i >= 0) state.values = state.values.slice(0, i); else state.values.push(k);
+  if (state.values.length === 5) { var last = VKEYS.filter(function (x) { return state.values.indexOf(x) < 0; })[0]; state.values.push(last); }
+  persist(); render();
+}
+function finish() {
+  var miss = -1;
+  for (var i = 0; i < STEPS.length; i++) { if (STEPS[i].type === 'q' && !state.ans[STEPS[i].id]) { miss = i; break; } }
+  if (miss >= 0) { state.idx = miss; notice = '還有題目沒作答，先完成這一題，再回到價值觀排序。'; persist(); render(); return; }
+  if (state.values.length < 6) return;
+  state.doneAt = new Date().toISOString(); state.savedFor = null; state.letter = null; state.screen = 'results';
+  persist(); render();
+}
+var armTimer = null;
+function restart(btn) {
+  if (btn.dataset.armed !== '1') {
+    btn.dataset.armed = '1'; btn.dataset.label = btn.textContent; btn.textContent = '再按一次，清除目前的作答';
+    clearTimeout(armTimer);
+    armTimer = setTimeout(function () { btn.dataset.armed = ''; btn.textContent = btn.dataset.label; }, 4000);
+    return;
+  }
+  clearTimeout(armTimer);
+  state = freshState(state.observe); state.screen = 'quiz'; RES = null;
+  persist(); render();
+}
+
+/* ================= results: save, copy, download, letter ================= */
+var isOwnerCache = false, resToken = 0, saving = false;
+function setSave(s, owner) {
+  var el = $('#save-status'), btn = $('#btn-save');
+  if (!el) return;
+  var M = {
+    connecting: '正在確認儲存功能…',
+    saving: '正在儲存結果…',
+    saved: owner ? '結果已儲存。回到對話跟 Claude 說「我做完了」，它就能讀到你的完整結果。' : '結果已儲存。這份測驗的擁有者（和協助他的 Claude）看得到你的結果。',
+    offer: '想讓 Claude 讀到結果，請按「儲存結果」。儲存後，這份測驗的擁有者（和協助他的 Claude）看得到你的結果。',
+    unavailable: '結果只存在這個瀏覽器，不會傳給任何人。想請別人幫你看，可以按「複製結果摘要」或「下載報告」，再自己傳給對方。',
+    denied: '你在這裡沒有儲存的權限。可以按「複製結果摘要」，貼給 Claude。',
+    error: '儲存失敗了。請再按一次「儲存結果」，或改用「複製結果摘要」。'
+  };
+  el.dataset.s = s; el.textContent = M[s] || '';
+  if (btn) btn.hidden = !(s === 'offer' || s === 'error');
+}
+function afterResults() {
+  var tk = ++resToken;
+  Promise.all([use('downloads'), use('sample'), use('db'), use('user')]).then(function (r) {
+    if (tk !== resToken || state.screen !== 'results') return;
+    var dl = r[0], sample = r[1], db = r[2], user = r[3];
+    var bdl = $('#btn-dl'); if (bdl) bdl.hidden = !dl;
+    var ai = $('#sec-ai'); if (ai) ai.hidden = !(sample || state.letter);
+    var ctl = $('.ai-ctl'); if (ctl && !sample) ctl.hidden = true;
+    if (!db || !user) { setSave('unavailable'); return; }
+    Promise.resolve(user.isOwner()).then(function (owner) {
+      if (tk !== resToken || state.screen !== 'results') return;
+      isOwnerCache = !!owner;
+      if (state.savedFor && state.savedFor === state.doneAt) { setSave('saved', isOwnerCache); return; }
+      if (isOwnerCache) saveResult(); else setSave('offer');
+    }, function () { setSave('offer'); });
+  });
+}
+function round1(v) { return Math.round(v * 10) / 10; }
+function buildPayload() {
+  var R = RES || compute(), b5 = {}, tt = {};
+  B5KEYS.forEach(function (k) { b5[k] = round1(R.b5[k]); });
+  T_ORDER.forEach(function (k) { tt[k] = round1(R.t[k]); });
+  return {
+    version: 1, takenAt: state.doneAt, savedAt: new Date().toISOString(), observe: !!state.observe,
+    archetype: archeOf(R), hollandCode: R.code, riasec: R.ri, bigFive: b5, talents: tt,
+    talentRank: R.tRank, values: R.vals,
+    topCareers: R.careers.slice(0, 8).map(function (c) { return { id: c.id, name: c.name, score: c.score }; }),
+    answers: state.ans, letter: state.letter || null
+  };
+}
+function saveResult() {
+  if (saving) return; saving = true; setSave('saving');
+  Promise.all([use('db'), use('user')]).then(function (r) {
+    var db = r[0], user = r[1];
+    if (!db || !user) { setSave('unavailable'); return null; }
+    return Promise.resolve(user.id()).then(function (uid) {
+      if (!uid) { setSave('unavailable'); return null; }
+      var payload = buildPayload(), doneAt = state.doneAt;
+      function write() { return db.doc('results/' + uid).set(payload); }
+      return write().catch(function (e) {
+        if (e && e.code === 'unavailable') return new Promise(function (res) { setTimeout(res, 600 + Math.random() * 600); }).then(write);
+        throw e;
+      }).then(function () {
+        if (state.doneAt === doneAt) { state.savedFor = doneAt; persist(); }
+        setSave('saved', isOwnerCache);
+      });
+    });
+  }).catch(function (e) {
+    var c = e && e.code;
+    setSave((c === 'invalid_argument' || c === 'not_granted' || c === 'revoked') ? 'denied' : 'error');
+  }).then(function () { saving = false; });
+}
+function saveLetter(text) {
+  if (!state.savedFor || state.savedFor !== state.doneAt) return;
+  Promise.all([use('db'), use('user')]).then(function (r) {
+    if (!r[0] || !r[1]) return null;
+    return Promise.resolve(r[1].id()).then(function (uid) { if (uid) return r[0].doc('results/' + uid).update({ letter: text }); return null; });
+  }).catch(function () { /* the letter stays on the page even if this update fails */ });
+}
+function summaryText() {
+  var R = RES || compute(), L = [];
+  L.push('【天賦羅盤結果】' + fmtDate(state.doneAt));
+  L.push('類型：' + archeOf(R));
+  L.push('Holland 代碼：' + R.code + '（' + HEX.map(function (x) { return x + ' ' + R.ri[x]; }).join(' / ') + '）');
+  L.push('天賦排序：' + R.tRank.map(function (k) { return tn(k) + ' ' + R.t[k].toFixed(1); }).join('、'));
+  L.push('五大人格：' + B5KEYS.map(function (k) { return B5INFO[k].name + ' ' + R.b5[k].toFixed(1); }).join('、'));
+  L.push('價值觀：' + R.vals.map(function (k) { return VALUES[k].name; }).join(' > '));
+  L.push('最契合方向：' + R.careers.slice(0, 6).map(function (c, i) { return (i + 1) + '. ' + c.name + ' ' + c.score + '%'; }).join('　'));
+  return L.join('\n');
+}
+function copySummary(btn) {
+  var text = summaryText();
+  function fallback() {
+    var ta = $('#copy-fallback'); ta.hidden = false; ta.value = text; ta.focus(); ta.select();
+    btn.textContent = '已選取文字，請按 Ctrl+C 複製';
+  }
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = '已複製';
+        setTimeout(function () { btn.textContent = '複製結果摘要'; }, 2000);
+      }, fallback);
+    } else fallback();
+  } catch (e) { fallback(); }
+}
+function downloadReport(btn) {
+  use('downloads').then(function (dl) {
+    if (!dl) { btn.hidden = true; return; }
+    var css = $('#app-css').textContent;
+    var node = $('#report').cloneNode(true);
+    Array.prototype.forEach.call(node.querySelectorAll('.no-export'), function (n) { n.remove(); });
+    var aiSec = node.querySelector('#sec-ai');
+    if (aiSec) {
+      if (!state.letter) aiSec.remove();
+      else { aiSec.hidden = false; aiSec.removeAttribute('hidden'); Array.prototype.forEach.call(aiSec.querySelectorAll('.ai-ctl,.ai-intro,#ai-note'), function (n) { n.remove(); }); }
+    }
+    var html = '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>天賦羅盤報告 ' + fmtDate(state.doneAt) + '</title><link rel="stylesheet" href="' + FONT_URL + '"><style>' + css + '</style></head><body><div class="app">' + node.outerHTML + '</div></body></html>';
+    return dl.save({ filename: '天賦羅盤報告-' + ymd(state.doneAt) + '.html', data: html }).then(function () {
+      btn.textContent = '已下載';
+      setTimeout(function () { btn.textContent = '下載報告'; }, 2500);
+    });
+  }).catch(function (e) {
+    if (e && e.code === 'declined') return;
+    btn.textContent = '下載失敗，請再試一次';
+  });
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function md(text) {
+  function inline(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
+  var html = '', list = null;
+  function close() { if (list) { html += '</' + list + '>'; list = null; } }
+  String(text).split('\n').forEach(function (raw) {
+    var l = raw.trim(), m;
+    if (!l) { close(); return; }
+    if ((m = l.match(/^#{1,4}\s+(.*)$/))) { close(); html += '<h4>' + inline(m[1]) + '</h4>'; }
+    else if ((m = l.match(/^[-*•]\s+(.*)$/))) { if (list !== 'ul') { close(); html += '<ul>'; list = 'ul'; } html += '<li>' + inline(m[1]) + '</li>'; }
+    else if ((m = l.match(/^\d+[.)、]\s*(.*)$/))) { if (list !== 'ol') { close(); html += '<ol>'; list = 'ol'; } html += '<li>' + inline(m[1]) + '</li>'; }
+    else { close(); html += '<p>' + inline(l) + '</p>'; }
+  });
+  close();
+  return html;
+}
+function buildPrompt() {
+  var R = RES || compute(), L = [];
+  var cons = consistency(R.order[0], R.order[1]), diff = differentiation(R.ri);
+  L.push('你是一位溫暖、直接、講證據的職涯顧問。請根據下面的測驗結果，用繁體中文（台灣用語）寫一封解讀信給受測者。');
+  L.push('');
+  L.push('寫作規則：');
+  L.push('- 只使用下面提供的資料，不要編造受測者沒做過的經歷、數字或證照。');
+  L.push('- 不要空泛稱讚（例如「你很棒」）。每個判斷都要說出是根據哪一項結果或哪一件事。');
+  L.push('- 興趣和個性是自評，不等於能力。結果彼此矛盾時，提出可能的解釋，不要硬下結論。');
+  L.push('- 用「你」稱呼。不要用表情符號。');
+  L.push('- 長度約 700 字，使用以下四個 Markdown 小標題（以 ## 開頭）：');
+  L.push('## 你是怎樣的人');
+  L.push('## 結果之間的呼應與矛盾');
+  L.push('## 最值得投入的方向');
+  L.push('## 接下來 30 天');
+  L.push('- 「接下來 30 天」列出 3 件具體、馬上可以做的事。');
+  L.push('');
+  L.push('【測驗結果】');
+  L.push('類型名稱（由天賦前兩名組成）：' + archeOf(R));
+  L.push('Holland 興趣代碼：' + R.code + '（0–100 分：' + HEX.map(function (x) { return x + ' ' + RIASEC[x].name + ' ' + R.ri[x]; }).join('、') + '）');
+  L.push('前兩碼一致性：' + cons.label + '；興趣分化程度：' + diff.label);
+  L.push('五大人格（1–5 分）：' + B5KEYS.map(function (k) { return B5INFO[k].name + ' ' + R.b5[k].toFixed(1) + '（' + BAND_LABEL[band(R.b5[k])] + '）'; }).join('、'));
+  L.push('天賦自評排序（1–5 分）：' + R.tRank.map(function (k) { return tn(k) + ' ' + R.t[k].toFixed(1); }).join('、'));
+  L.push('工作價值觀排序：' + R.vals.map(function (k) { return VALUES[k].name; }).join(' > '));
+  L.push('系統配對的前六個方向：' + R.careers.slice(0, 6).map(function (c) { return c.name + ' ' + c.score + '%'; }).join('、'));
+  if (state.observe) {
+    L.push('');
+    L.push('【Claude 在協助他做專案時觀察到的事例（真實發生，可以引用）】');
+    L.push(BACKGROUND);
+    T_ORDER.forEach(function (k) { L.push('- ' + tn(k) + '：' + TALENTS[k].ev); });
+  }
+  return L.join('\n');
+}
+var aiCtl = null;
+var AI_ERR = { rate_limited: '目前使用太頻繁，請稍後再試。', session_expired: '請重新登入 Claude 後再試。', refused: '這次沒辦法產生解讀信，可以稍後再試。', empty_completion: '這次沒有產生內容，請再試一次。', prompt_too_large: '資料太長了，請重新整理頁面後再試。' };
+function runLetter() {
+  use('sample').then(function (sample) {
+    var out = $('#ai-out'), note = $('#ai-note'), go = $('#ai-go'), stop = $('#ai-stop');
+    if (!sample || !out) return;
+    aiCtl = new AbortController();
+    go.disabled = true; stop.hidden = false; note.textContent = '';
+    out.innerHTML = '<p class="thinking">Claude 正在思考，大約需要 30–60 秒…</p>';
+    var opts = { signal: aiCtl.signal, modelTier: 'default', onText: function (u) { out.innerHTML = md(u.text); } };
+    if (state.letter) opts.cache = false;
+    sample(buildPrompt(), opts).then(function (res) {
+      out.innerHTML = md(res.text); state.letter = res.text; persist();
+      if (res.truncated) note.textContent = '解讀信寫到一半被截斷了，可以再試一次。';
+      saveLetter(res.text);
+    }, function (e) {
+      var code = e && e.code;
+      out.innerHTML = (e && e.text) ? md(e.text) : (state.letter ? md(state.letter) : '');
+      if (code === 'cancelled') return;
+      if (['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].indexOf(code) >= 0) {
+        var ctl = $('.ai-ctl'); if (ctl) ctl.hidden = true;
+        note.textContent = '這個畫面無法使用 Claude 解讀，其他結果不受影響。';
+        return;
+      }
+      note.textContent = AI_ERR[code] || '連線中斷了，請再試一次。';
+    }).then(function () {
+      go.disabled = false; go.textContent = state.letter ? '重寫一封' : '寫解讀信'; stop.hidden = true;
+    });
+  });
+}
+
+/* ================= events ================= */
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('button');
+  if (!b || b.disabled) return;
+  if (b.dataset.val) { answer(+b.dataset.val); return; }
+  if (b.dataset.v) { toggleValue(b.dataset.v); return; }
+  switch (b.dataset.act) {
+    case 'home': state.screen = 'intro'; persist(); render(); break;
+    case 'begin': state.screen = 'quiz'; state.idx = 0; persist(); render(); break;
+    case 'resume': state.screen = 'quiz'; persist(); render(); break;
+    case 'next': next(); break;
+    case 'back': back(); break;
+    case 'restart': restart(b); break;
+    case 'show-results': state.screen = 'results'; persist(); render(); break;
+    case 'vreset': state.values = []; persist(); render(); break;
+    case 'finish': finish(); break;
+    case 'save': saveResult(); break;
+    case 'copy': copySummary(b); break;
+    case 'download': downloadReport(b); break;
+    case 'ai-go': runLetter(); break;
+    case 'ai-stop': if (aiCtl) aiCtl.abort(); break;
+  }
+});
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.id === 'observe') { state.observe = e.target.checked; persist(); }
+});
+document.addEventListener('keydown', function (e) {
+  if (e.metaKey || e.ctrlKey || e.altKey || state.screen !== 'quiz') return;
+  var tag = e.target && e.target.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  var st = STEPS[state.idx];
+  if (st.type === 'q' && /^[1-5]$/.test(e.key)) { e.preventDefault(); answer(+e.key); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); back(); }
+  else if (e.key === 'ArrowRight' && (st.type === 'section' || (st.type === 'q' && state.ans[st.id]))) { e.preventDefault(); next(); }
+});
+
+/* ================= boot ================= */
+loadLocal();
+if (window.__TC_DEMO__) {
+  var seed = 7;
+  var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+  var base = { R: 2, I: 2.6, A: 3.8, S: 3.4, E: 4, C: 2.4, insight: 4.4, people: 4.1, ideate: 4, maker: 4.2, taste: 4.3, orchestrate: 3.9, influence: 3.6, analysis: 3.4, adapt: 4.5, order: 2.6 };
+  ALL_Q.forEach(function (q) { var b = base[q.key] || 3; state.ans[q.id] = Math.max(1, Math.min(5, Math.round(b + (rnd() - 0.5) * 1.6))); });
+  state.values = ['ach', 'ind', 'rel', 'rec', 'con', 'sup'];
+  state.doneAt = new Date().toISOString(); state.screen = 'results';
+}
+render();
+var hot = window.claude && window.claude.hot;
+if (hot) {
+  try { if (typeof hot.snapshot === 'function') hot.snapshot(function () { return { state: state }; }); } catch (e) { /* ignore */ }
+  var start = function (data) { if (data && data.state) { state = sanitize(data.state); render(); } };
+  try { if (typeof hot.ready === 'function') hot.ready(start); else start(hot.data || {}); } catch (e) { /* ignore */ }
+}
+})();
+</script>
+
+</body>
+</html>
